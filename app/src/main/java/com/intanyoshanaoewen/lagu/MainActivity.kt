@@ -8,55 +8,84 @@ import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
-    private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item->
-        when(item.itemId){
-            R.id.navigation_find -> {
-                println("Find pressed")
-                replaceFragment(FindFragment())
-                return@OnNavigationItemSelectedListener true
-            }
-            R.id.navigation_wishlist -> {
-                println("Wishlist pressed")
-                replaceFragment(WishlistFragment())
-                return@OnNavigationItemSelectedListener true
-            }
-            R.id.navigation_calendar -> {
-                println("Calendar pressed")
-                replaceFragment(CalendarFragment())
-                return@OnNavigationItemSelectedListener true
-            }
-            R.id.navigation_create -> {
-                println("Create pressed")
-                replaceFragment(CreateFragment())
-                return@OnNavigationItemSelectedListener true
-            }
-            R.id.navigation_logout -> {
-                println("Logout pressed")
-                replaceFragment(LogoutFragment())
-                return@OnNavigationItemSelectedListener true
-            }
-
-        }
-
-        false
-
-    }
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        bottomNav.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
-        replaceFragment(FindFragment())
+        val id = intent.getIntExtra("select", R.id.navigation_find)
+
+        bottomNav.setOnNavigationItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.navigation_find -> {
+                    loadFindFragment(savedInstanceState)
+                }
+                R.id.navigation_wishlist -> {
+                    loadWishlistFragment(savedInstanceState)
+                }
+                R.id.navigation_calendar-> {
+                    loadCalendarFragment(savedInstanceState)
+                }
+                R.id.navigation_create-> {
+                    loadCreateFragment(savedInstanceState)
+                }
+                R.id.navigation_logout-> {
+                    loadLogoutFragment(savedInstanceState)
+                }
+            }
+            true
+        }
+
+        bottomNav.selectedItemId = id
     }
 
-
-    private fun replaceFragment(fragment: Fragment){
-        val fragmentTransaction = supportFragmentManager.beginTransaction()
-        fragmentTransaction.replace(R.id.navigationContainer, fragment)
-        fragmentTransaction.commit()
+    private fun loadLogoutFragment(savedInstanceState: Bundle?) {
+        if (savedInstanceState == null) {
+            supportFragmentManager
+                .beginTransaction()
+                .replace(R.id.navigationContainer, FindFragment(), FindFragment::class.java.simpleName)
+                .commitAllowingStateLoss()
+        }
     }
+
+    private fun loadCreateFragment(savedInstanceState: Bundle?) {
+        if (savedInstanceState == null) {
+            supportFragmentManager
+                .beginTransaction()
+                .replace(R.id.navigationContainer, CreateFragment(), CreateFragment::class.java.simpleName)
+                .commitAllowingStateLoss()
+        }
+    }
+
+    private fun loadCalendarFragment(savedInstanceState: Bundle?) {
+        if (savedInstanceState == null) {
+            supportFragmentManager
+                .beginTransaction()
+                .replace(R.id.navigationContainer, LogoutFragment(), LogoutFragment::class.java.simpleName)
+                .commitAllowingStateLoss()
+        }
+
+    }
+
+    private fun loadWishlistFragment(savedInstanceState: Bundle?) {
+        if (savedInstanceState == null) {
+            supportFragmentManager
+                .beginTransaction()
+                .replace(R.id.navigationContainer, WishlistFragment(), WishlistFragment::class.java.simpleName)
+                .commitAllowingStateLoss()
+        }
+    }
+
+    private fun loadFindFragment(savedInstanceState: Bundle?) {
+        if (savedInstanceState == null) {
+            supportFragmentManager
+                .beginTransaction()
+                .replace(R.id.navigationContainer, FindFragment(), FindFragment::class.java.simpleName)
+                .commitAllowingStateLoss()
+        }
+
+    }
+
 
 }
 
