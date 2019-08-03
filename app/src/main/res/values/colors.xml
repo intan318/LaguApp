@@ -3,4 +3,12 @@
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
+
+    <color name="hijau">#006F3c</color>
+    <color name="Abu">#b7b7b7</color>
+    <color name="putih">#ffffff</color>
+    <color name="hitam">#000</color>
+    <color name="formBackground">#4EA66D</color>
+    <color name="putihHint">#4DFFFFFF</color>
+    <color name="putihNormal">#A6FFFFFF</color>
 </resources>
