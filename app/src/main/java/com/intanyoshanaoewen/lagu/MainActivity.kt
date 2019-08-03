@@ -1,22 +1,24 @@
 package com.intanyoshanaoewen.lagu
 
-import androidx.appcompat.app.AppCompatActivity
+import android.content.Context
+import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import com.google.android.material.bottomnavigation.BottomNavigationItemView
-import com.google.android.material.bottomnavigation.BottomNavigationView
+import android.support.design.internal.BottomNavigationItemView
+import android.support.design.widget.BottomNavigationView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val id = intent.getIntExtra("select", R.id.navigation_find)
 
         bottomNav.setOnNavigationItemSelectedListener { item ->
-            when (item.itemId) {
+            when(item.itemId){
                 R.id.navigation_find -> {
                     loadFindFragment(savedInstanceState)
                 }
@@ -36,35 +38,16 @@ class MainActivity : AppCompatActivity() {
             true
         }
 
-        bottomNav.selectedItemId = id
-    }
-
-    private fun loadLogoutFragment(savedInstanceState: Bundle?) {
-        if (savedInstanceState == null) {
-            supportFragmentManager
-                .beginTransaction()
-                .replace(R.id.navigationContainer, FindFragment(), FindFragment::class.java.simpleName)
-                .commitAllowingStateLoss()
-        }
-    }
-
-    private fun loadCreateFragment(savedInstanceState: Bundle?) {
-        if (savedInstanceState == null) {
-            supportFragmentManager
-                .beginTransaction()
-                .replace(R.id.navigationContainer, CreateFragment(), CreateFragment::class.java.simpleName)
-                .commitAllowingStateLoss()
-        }
+        bottomNav.selectedItemId = R.id.navigation_find
     }
 
     private fun loadCalendarFragment(savedInstanceState: Bundle?) {
         if (savedInstanceState == null) {
             supportFragmentManager
                 .beginTransaction()
-                .replace(R.id.navigationContainer, LogoutFragment(), LogoutFragment::class.java.simpleName)
+                .replace(R.id.navigationContainer, CalendarFragment(), CalendarFragment::class.java.simpleName)
                 .commitAllowingStateLoss()
         }
-
     }
 
     private fun loadWishlistFragment(savedInstanceState: Bundle?) {
@@ -83,7 +66,24 @@ class MainActivity : AppCompatActivity() {
                 .replace(R.id.navigationContainer, FindFragment(), FindFragment::class.java.simpleName)
                 .commitAllowingStateLoss()
         }
+    }
 
+    private fun loadCreateFragment(savedInstanceState: Bundle?) {
+        if (savedInstanceState == null) {
+            supportFragmentManager
+                .beginTransaction()
+                .replace(R.id.navigationContainer, CreateFragment(), CreateFragment::class.java.simpleName)
+                .commitAllowingStateLoss()
+        }
+    }
+
+    private fun loadLogoutFragment(savedInstanceState: Bundle?) {
+        if (savedInstanceState == null) {
+            supportFragmentManager
+                .beginTransaction()
+                .replace(R.id.navigationContainer, LogoutFragment(), LogoutFragment::class.java.simpleName)
+                .commitAllowingStateLoss()
+        }
     }
 
 

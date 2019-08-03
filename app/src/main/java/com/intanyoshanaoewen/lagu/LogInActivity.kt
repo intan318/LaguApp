@@ -10,13 +10,11 @@ import com.google.android.gms.common.SignInButton
 import kotlinx.android.synthetic.main.activity_log_in.*
 import com.google.android.gms.tasks.Task
 import android.content.Intent
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.common.api.ApiException
 
 
-
-
-
-const val RC_SIGN_IN = 123
+const val GOOGLE_REQ_CODE = 88
 
 class LogInActivity : AppCompatActivity() {
 
@@ -24,11 +22,15 @@ class LogInActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_log_in)
 
+        checkIfUserLoggedIn()
+
+
         // Configure sign-in to request the user's ID, email address, and basic
         // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestEmail()
             .build()
+
         // Build a GoogleSignInClient with the options specified by gso.
         val mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
@@ -36,14 +38,21 @@ class LogInActivity : AppCompatActivity() {
         txtSignIn.visibility = View.GONE
         sign_in_button.setSize(SignInButton.SIZE_STANDARD)
         sign_in_button.setOnClickListener{
-            val signInIntent = mGoogleSignInClient.signInIntent
-            startActivityForResult(signInIntent, RC_SIGN_IN)
+            val signInIntent = mGoogleSignInClient?.signInIntent
+            startActivityForResult(signInIntent, GOOGLE_REQ_CODE)
         }
         val acct = GoogleSignIn.getLastSignedInAccount(this)
         if (acct != null) {
             sign_in_button.visibility = View.GONE
             txtSignIn.text = acct.displayName
             txtSignIn.visibility = View.VISIBLE
+        }
+    }
+
+    private fun checkIfUserLoggedIn() {
+        val account = GoogleSignIn.getLastSignedInAccount(this)
+        if (account?.isExpired!=null){
+            goToMain()
         }
     }
 
@@ -58,7 +67,7 @@ class LogInActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
 
         // Result returned from launching the Intent from GoogleSignInClient.getSignInIntent(...);
-        if (requestCode == RC_SIGN_IN) {
+        if (requestCode == GOOGLE_REQ_CODE) {
             // The Task returned from this call is always completed, no need to attach
             // a listener.
             val task = GoogleSignIn.getSignedInAccountFromIntent(data)
@@ -85,5 +94,11 @@ class LogInActivity : AppCompatActivity() {
     }
 
 
+    fun goToMain(){
+        val i = Intent(this@LogInActivity, MainActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+        startActivity(i)
+        finish()
+    }
 
 }
