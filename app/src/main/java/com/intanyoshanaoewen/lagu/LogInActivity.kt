@@ -12,6 +12,8 @@ import com.google.android.gms.tasks.Task
 import android.content.Intent
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.common.api.ApiException
+import com.intanyoshanaoewen.lagu.Model.User
+import timber.log.Timber
 
 
 const val GOOGLE_REQ_CODE = 88
@@ -79,9 +81,26 @@ class LogInActivity : AppCompatActivity() {
         try {
             val account = completedTask.getResult(ApiException::class.java)
 
-            sign_in_button.visibility = View.GONE
-            txtSignIn.text = account!!.displayName
-            txtSignIn.visibility = View.VISIBLE
+           Timber.e("handleLoginResponse success")
+
+            if (account != null) {
+
+                Timber.e("handleLoginResponse account "+account.toString())
+                Timber.e("handleLoginResponse url "+account.photoUrl)
+                Timber.e("handleLoginResponse url string "+account.photoUrl.toString())
+
+                val personName = account.displayName
+                val personGivenName = account.givenName
+                val personFamilyName = account.familyName
+                val personEmail = account.email
+                val personId = account.id
+                val personPhoto = account.photoUrl
+
+                val user = User(personId, personName, personEmail, personPhoto.toString(), "Google")
+                MyPreference.getInstance(this).addUserSession(user)
+                goToMain()
+            }
+
         } catch (e: ApiException) {
             // The ApiException status code indicates the detailed failure reason.
             // Please refer to the GoogleSignInStatusCodes class reference for more information.
